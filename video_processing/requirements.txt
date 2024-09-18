@@ -1,0 +1,5 @@
+   Django>=3.2,<4.0
+   psycopg2-binary  # PostgreSQL adapter
+   djangorestframework  # If you're using Django REST framework
+   ffmpeg-python  # For ffmpeg integration
+   pysrt

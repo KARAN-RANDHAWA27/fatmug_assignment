@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  {{ video.title }}
+{% endblock %}
+
+{% block content %}
+  <div class="container mt-4">
+    <h1>{{ video.title }}</h1>
+    <video id="videoPlayer" width="640" height="360" controls>
+      <source src="{{ video.file.url }}" type="video/mp4" />
+      <track kind="subtitles" src="{{ video.file.url }}.vtt" srclang="en" label="English" default />Your browser does not support the video tag.
+    </video>
+
+    <br />
+    <a class="btn btn-primary mt-3" href="{% url 'video_list' %}">Back to Video List</a>
+  </div>
+
+  <script>
+    const video = document.getElementById('videoPlayer')
+    
+    function jumpToTimestamp(seconds) {
+      // Ensure the video is loaded before setting the current time
+      if (video.readyState >= 1) {
+        // '1' means metadata is loaded
+        video.currentTime = seconds // Set the current time of the video
+        video.play() // Play the video from that timestamp
+      } else {
+        // Wait until the video is ready to seek
+        video.addEventListener('loadedmetadata', function () {
+          video.currentTime = seconds
+          video.play()
+        })
+      }
+    }
+    
+    // Check if there's a timestamp in the URL fragment
+    window.onload = function () {
+      const hash = window.location.hash
+      if (hash.startsWith('#t=')) {
+        const seconds = parseFloat(hash.split('=')[1])
+        if (!isNaN(seconds)) {
+          jumpToTimestamp(seconds) // Jump to the timestamp if present
+        }
+      }
+    }
+  </script>
+{% endblock %}

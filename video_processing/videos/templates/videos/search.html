@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Search Subtitles
+{% endblock %}
+
+{% block content %}
+  <div class="container mt-5">
+    <div class="row justify-content-center">
+      <div class="col-lg-12">
+        <div class="search-container">
+          <!-- Search Title -->
+          <div class="text-center mb-4">
+            <h1 class="display-5">Search Subtitles</h1>
+            <p class="text-muted">Find subtitles for your favorite videos.</p>
+          </div>
+
+          <!-- Search Form -->
+          <form method="get" class="d-flex mb-4">
+            <input type="text" name="q" value="{{ query }}" class="form-control me-2 flex-grow-1" placeholder="Search for subtitles..." required />
+            <button type="submit" class="btn btn-primary">Search</button>
+          </form>
+
+          <!-- Results Section -->
+          <div class="results">
+            {% if results %}
+              <h2 class="text-center text-secondary mb-4">Search Results</h2>
+              <div class="row">
+                {% for subtitle in results %}
+                  <div class="col-md-4 mb-3">
+                    <div class="card h-100">
+                      <div class="card-body">
+                        <h5 class="card-title">{{ subtitle.video.title }}</h5>
+                        <p class="card-text">
+                          <strong>{{ subtitle.language }}</strong>: {{ subtitle.content }}
+                        </p>
+                        <p class="btn btn-outline-primary btn-sm mt-2">Subtitle present at: {{ subtitle.timestamp }}s</p>
+                      </div>
+                    </div>
+                  </div>
+                {% endfor %}
+              </div>
+            {% else %}
+              <div class="alert alert-info text-center">
+                No results found for "<strong>{{ query }}</strong>".
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {% block extra_css %}
+    <style>
+      body {
+        background-color: #f5f7fa;
+        font-family: 'Helvetica Neue', sans-serif;
+      }
+      .search-container {
+        background: white;
+        padding: 3rem;
+        border-radius: 1rem;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      }
+      h1 {
+        font-weight: 700;
+        color: #333;
+      }
+      .form-control {
+        border: 2px solid #ced4da;
+        border-radius: 0.5rem;
+        padding: 1rem;
+      }
+      .form-control:focus {
+        border-color: #007bff;
+        box-shadow: none;
+      }
+      .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+        border-radius: 0.5rem;
+        padding: 0.75rem 1.5rem;
+        font-size: 1rem;
+        transition: background-color 0.3s ease;
+      }
+      .btn-primary:hover {
+        background-color: #0056b3;
+      }
+      .card {
+        border: none;
+        border-radius: 1rem;
+        box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        padding-left: 14px;
+      }
+      .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+      }
+      .card-title {
+        font-size: 1.25rem;
+        color: #333;
+        font-weight: 600;
+      }
+      .card-text {
+        font-size: 1rem;
+        color: #555;
+      }
+      .btn-outline-primary {
+        border-radius: 0.5rem;
+        transition: background-color 0.3s ease, color 0.3s ease;
+      }
+      .btn-outline-primary:hover {
+        background-color: #007bff;
+        color: white;
+      }
+    </style>
+  {% endblock %}
+{% endblock %}
